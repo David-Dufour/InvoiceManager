@@ -48,7 +48,7 @@
                 <MenuItem Header="Delete" IsEnabled="False"/>
             </MenuItem>
             <MenuItem Header="Manage">
-                <MenuItem Header="Clients" IsEnabled="False"/>
+                <MenuItem Header="Clients" Command="{Binding ManageClientsCommand}"/>
                 <MenuItem Header="Invoices" IsEnabled="False"/>
                 <MenuItem Header="Products" IsEnabled="False"/>
                 <MenuItem Header="Providers" IsEnabled="False"/>
@@ -56,13 +56,16 @@
         </Menu>
 
         <dock:DockingManager Grid.Row="1"
-                         DataContext="{Binding DockManagerViewModel}"
+                         DataContext="{Binding DockManager}"
                          DocumentsSource="{Binding Documents}"
                          AnchorablesSource="{Binding Anchorables}" >
 
             <dock:DockingManager.Resources>
                 <DataTemplate DataType="{x:Type vm:ViewModelInvoice}">
                     <v:ViewInvoice />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:ViewModelCustomerManager}">
+                    <v:ViewCustomerManager />
                 </DataTemplate>
             </dock:DockingManager.Resources>
 

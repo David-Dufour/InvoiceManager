@@ -13,16 +13,19 @@ namespace InvoiceManager.ViewModel
     {
         #region Attributes
         private readonly IDataService _dataService;
+        private bool IsCustomerManagerOpen = false;
         #endregion
 
         #region Properties
-        public DockManagerViewModel DockManagerViewModel { get; private set; }
+        public DockManagerViewModel DockManager { get; private set; }
+        public ViewModelCustomerManager CustomerManager { get; private set; }
 
         public RelayCommand NewCommand { get; private set; }
         public RelayCommand OpenCommand { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand CloseCommand { get; private set; }
         public RelayCommand ExitCommand { get; private set; }
+        public RelayCommand ManageClientsCommand { get; private set; }
         #endregion
 
         #region Constructor
@@ -40,7 +43,8 @@ namespace InvoiceManager.ViewModel
                 });
 
             // Docking Panels
-            DockManagerViewModel = new DockManagerViewModel(new List<DockWindowViewModel>());
+            DockManager = new DockManagerViewModel(new List<DockWindowViewModel>());
+            CustomerManager = new ViewModelCustomerManager();
 
             // Binding Commands
             NewCommand = new RelayCommand(() => New());
@@ -48,13 +52,14 @@ namespace InvoiceManager.ViewModel
             SaveCommand = new RelayCommand(() => Save());
             CloseCommand = new RelayCommand(() => Close());
             ExitCommand = new RelayCommand(() => Exit());
+            ManageClientsCommand = new RelayCommand(() => ManageClients());
         }
         #endregion
 
         #region Binding Commands
         private void New()
         {
-            DockManagerViewModel.Documents.Add(new ViewModelInvoice() { ID = "", Name = "New Invoice" });
+            DockManager.Documents.Add(new ViewModelInvoice() { ID = "", Name = "New Invoice" });
         }
 
         private void Open()
@@ -78,6 +83,15 @@ namespace InvoiceManager.ViewModel
         private void Exit()
         {
             Application.Current.Shutdown();
+        }
+
+        private void ManageClients()
+        {
+            if (!IsCustomerManagerOpen)
+            {
+                IsCustomerManagerOpen = true;
+                DockManager.Documents.Add(CustomerManager);
+            }
         }
         #endregion
     }
